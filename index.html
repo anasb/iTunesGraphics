@@ -22,9 +22,14 @@
     var animated        = true;
 
     // CAMERA
-    var SCREEN_WIDTH = 0.85 * screen.width, SCREEN_HEIGHT = 0.8 * screen.height;
-    var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-    var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+    var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR, camera;
+    SCREEN_WIDTH = 0.85 * screen.width;
+    SCREEN_HEIGHT = 0.8 * screen.height;
+    VIEW_ANGLE = 45, 
+    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, 
+    NEAR = 0.1, 
+    FAR = 20000;
+    camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     scene.add(camera);
     camera.position.set(0,150,400);
     camera.lookAt(scene.position);   
@@ -60,26 +65,28 @@
     scene.add(light);
 
     // PLANE
-    var floorTexture = THREE.ImageUtils.loadTexture("textures/metal.jpg");
+    var floorTexture, floorMaterial, floorGeometry, floor;
+    floorTexture = THREE.ImageUtils.loadTexture("textures/metal.jpg");
     floorTexture.needsUpdate = true;
     floorTexture.wrapS = floorTexture.wrapT = THREE.ClampToEdgeWrapping;
     floorTexture.minFilter = THREE.NearestFilter;
-    var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    var floorGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
-    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+    floorGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
+    floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.position.y = -0.5;
     floor.rotation.x = Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
 	// CUBE
-	var cubeTexture = THREE.ImageUtils.loadTexture("textures/funky.jpg");
+    var cubeTexture, cubeMaterial, cubeGeometry, cube;
+	cubeTexture = THREE.ImageUtils.loadTexture("textures/funky.jpg");
     cubeTexture.needsUpdate = true;
     cubeTexture.wrapS = cubeTexture.wrapT = THREE.ClampToEdgeWrapping;
     cubeTexture.minFilter = THREE.NearestFilter; 
-    var cubeMaterial = new THREE.MeshBasicMaterial( { map: cubeTexture, side: THREE.DoubleSide } );
-    var cubeGeometry = new THREE.BoxGeometry(100, 100, 100);
-	var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    cubeMaterial = new THREE.MeshBasicMaterial({ map: cubeTexture, side: THREE.DoubleSide });
+    cubeGeometry = new THREE.BoxGeometry(100, 100, 100);
+	cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.position.z = -100;
     cube.rotation.x = 1;
     cube.rotation.y = 1;
@@ -91,6 +98,7 @@
 		time = (new Date().getTime()) / 1000;
 	 	requestAnimationFrame( render );
 
+        // Animate stuff
         if (animated) {
     	    cube.position.z = -100 + 20 * Math.sin(time);
         }
