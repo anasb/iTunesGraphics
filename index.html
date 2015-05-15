@@ -8,6 +8,8 @@
 <script src="js/script.js"></script>
 <script src="js/three.min.js"></script>
 <script src="js/AnaglyphEffect.js"></script>
+<script src="js/CSS3DRenderer.js"></script>
+<script src="js/Projector.js"></script>
 
 <center>
 <div id='container'>
@@ -19,7 +21,7 @@
 
     var container, renderer, effect;
     var anaglyphIsOn    = false;
-    var animated        = true;
+    var animated        = false;
 
     // CAMERA
     var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR, camera;
@@ -42,6 +44,7 @@
     renderer.setClearColor( 0xffffff, 1);
     renderer.shadowMapEnabled = true;
     renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    renderer.domElement.style.margin = '0 auto';
     document.body.appendChild( renderer.domElement );
     
     // For 3D
@@ -78,6 +81,62 @@
     floor.receiveShadow = true;
     scene.add(floor);
 
+    // Tweet
+    // var tweetMaterial, tweetGeometry, tweet;
+    // tweetMaterial = new THREE.MeshBasicMaterial({ color:0x55ACEE });
+    // tweetGeometry = new THREE.PlaneBufferGeometry(100, 100, 1, 1);
+    // tweet = new THREE.Mesh(tweetGeometry, tweetMaterial);
+    // tweet.position.x = -200;
+    // tweet.position.y = 1;
+    // tweet.receiveShadow = true;
+    // scene.add(tweet);
+
+    // CSS3D
+    //-----------------------------------------------------------
+
+    // HTML Plane
+    var planeMaterial   = new THREE.MeshBasicMaterial({color: 0x55ACEE, opacity: 0.1, side: THREE.DoubleSide });
+    var planeWidth = 250;
+    var planeHeight = 100;
+    var planeGeometry = new THREE.PlaneBufferGeometry( planeWidth, planeHeight );
+    var planeMesh= new THREE.Mesh( planeGeometry, planeMaterial );
+    planeMesh.position.y += planeHeight/2;
+    scene.add(planeMesh);
+
+    // CSS Scene
+    var cssScene = new THREE.Scene();
+    var element = document.createElement('iframe')
+    element.src = "pages/profile.html";
+    var elementWidth = SCREEN_WIDTH;
+    var aspectRatio = planeHeight / planeWidth;
+    var elementHeight = SCREEN_HEIGHT; //elementWidth * aspectRatio;
+    element.style.width  = elementWidth + "px";
+    element.style.height = elementHeight + "px";
+    
+    // CSS Object
+    var cssObject = new THREE.CSS3DObject( element );
+    cssObject.position = planeMesh.position;
+    cssObject.rotation = planeMesh.rotation;
+    var percentBorder = 0.05;
+    cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
+    cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
+    cssScene.add(cssObject);
+    
+    // create a renderer for CSS
+    rendererCSS = new THREE.CSS3DRenderer();
+    rendererCSS.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+    // rendererCSS.domElement.style.position = 'absolute';
+    // rendererCSS.domElement.style.top      = 0;
+    // rendererCSS.domElement.style.margin   = 0;
+    // rendererCSS.domElement.style.padding  = 0;
+    document.body.appendChild( rendererCSS.domElement );
+
+    // renderer.domElement.style.position = 'absolute';
+    // renderer.domElement.style.top      = 50;
+    // renderer.domElement.style.zIndex   = 1;
+    // rendererCSS.domElement.appendChild( renderer.domElement );
+    //-----------------------------------------------------------
+
 	// CUBE
     var cubeTexture, cubeMaterial, cubeGeometry, cube;
 	cubeTexture = THREE.ImageUtils.loadTexture("textures/funky.jpg");
@@ -91,7 +150,7 @@
     cube.rotation.x = 1;
     cube.rotation.y = 1;
     cube.castShadow = true;
-	floor.add(cube);
+	// floor.add(cube);
 
 	// RENDER
 	var render = function () {
