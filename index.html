@@ -27,14 +27,14 @@
     var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR, camera;
     SCREEN_WIDTH = 0.85 * screen.width;
     SCREEN_HEIGHT = 0.8 * screen.height;
-    VIEW_ANGLE = 45, 
-    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, 
+    VIEW_ANGLE = 45,
+    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 0.1, 
     FAR = 20000;
     camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     scene.add(camera);
     camera.position.set(0,150,400);
-    camera.lookAt(scene.position);   
+    camera.lookAt(scene.position);
 
     // RENDERER
 	container = document.getElementById('container');
@@ -142,7 +142,7 @@
 	cubeTexture = THREE.ImageUtils.loadTexture("textures/funky.jpg");
     cubeTexture.needsUpdate = true;
     cubeTexture.wrapS = cubeTexture.wrapT = THREE.ClampToEdgeWrapping;
-    cubeTexture.minFilter = THREE.NearestFilter; 
+    cubeTexture.minFilter = THREE.NearestFilter;
     cubeMaterial = new THREE.MeshBasicMaterial({ map: cubeTexture, side: THREE.DoubleSide });
     cubeGeometry = new THREE.BoxGeometry(100, 100, 100);
 	cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
