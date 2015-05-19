@@ -1,8 +1,7 @@
 <html>
-<title>Twitter Graphics</title>
+<title>Cool Graphics</title>
 <body>
-<center><h2>Computer Graphics - Anas Bouzoubaa Final Project</h2></center>
-<br/>
+<center><h2>Anas Bouzoubaa Final Project</h2></center>
 
 <link href="style/style.css" rel="stylesheet" type="text/css">
 <script src="js/script.js"></script>
@@ -10,6 +9,7 @@
 <script src="js/AnaglyphEffect.js"></script>
 <script src="js/CSS3DRenderer.js"></script>
 <script src="js/Projector.js"></script>
+<script src="js/TrackballControls.js"></script>
 
 <center>
 <div id='container'>
@@ -17,25 +17,281 @@
 </center>
 
 <script>
-	this.scene = new THREE.Scene();
+var dieHard = {
+  "resultCount": 7,
+  "results": [
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "collectionId": 585526588,
+      "trackId": 270711082,
+      "artistName": "John McTiernan",
+      "collectionName": "Die Hard Quadrilogy",
+      "trackName": "Die Hard",
+      "collectionCensoredName": "Die Hard Quadrilogy",
+      "trackCensoredName": "Die Hard",
+      "collectionArtistId": 345346894,
+      "collectionArtistViewUrl": "https://itunes.apple.com/us/artist/20th-century-fox/id345346894?uo=4",
+      "collectionViewUrl": "https://itunes.apple.com/us/movie/die-hard/id270711082?uo=4",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/die-hard/id270711082?uo=4",
+      "previewUrl": "http://a1531.v.phobos.apple.com/us/r1000/035/Video/v4/e0/a4/6a/e0a46a23-b846-ff28-b48d-7e9244e960cc/mzvf_227524764746354034.640x480.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is4.mzstatic.com/image/pf/us/r30/Video/v4/93/fa/27/93fa2767-a02c-e53e-dcaf-48a2a0cf0e95/mza_1552070195320097250.30x30-50.jpg",
+      "artworkUrl60": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/93/fa/27/93fa2767-a02c-e53e-dcaf-48a2a0cf0e95/mza_1552070195320097250.60x60-50.jpg",
+      "artworkUrl100": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/93/fa/27/93fa2767-a02c-e53e-dcaf-48a2a0cf0e95/mza_1552070195320097250.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "1988-07-15T07:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "discCount": 1,
+      "discNumber": 1,
+      "trackCount": 4,
+      "trackNumber": 1,
+      "trackTimeMillis": 7935810,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "R",
+      "longDescription": "Facing Christmas 3,000 miles from his estranged wife and two children, New York policeman John McClane (Bruce Willis) flies to Los Angeles bearing presents and hoping to patch up his marriage.  Stylish and cool Hans Gruber (Alan Rickman) is in Los Angeles as well for the holiday season, but he's not there to give out presents. He's there to take: more than $600 million in negotiable bearer bonds from the multinational Nakatomi Corporation, where McClane's wife Holly (Bonnie Bedelia) is an executive. When the takeover becomes hostile, it's up to John McClane to take on the terrorists with all the grit and determination he can muster--but not without a sense of humor.",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.270711082"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "collectionId": 585526588,
+      "trackId": 270609870,
+      "artistName": "John McTiernan",
+      "collectionName": "Die Hard Quadrilogy",
+      "trackName": "Die Hard: With a Vengeance",
+      "collectionCensoredName": "Die Hard Quadrilogy",
+      "trackCensoredName": "Die Hard: With a Vengeance",
+      "collectionArtistId": 345346894,
+      "collectionArtistViewUrl": "https://itunes.apple.com/us/artist/20th-century-fox/id345346894?uo=4",
+      "collectionViewUrl": "https://itunes.apple.com/us/movie/die-hard-with-a-vengeance/id270609870?uo=4",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/die-hard-with-a-vengeance/id270609870?uo=4",
+      "previewUrl": "http://a483.v.phobos.apple.com/us/r1000/011/Video6/v4/79/49/41/794941af-9d08-913f-b364-2403fc418fa5/mzvf_4473307397923454287.640x362.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is5.mzstatic.com/image/pf/us/r30/Video2/v4/b6/b1/78/b6b1783a-f2b9-27d7-1b1e-c3cffe88b759/mza_5038449943742535542.30x30-50.jpg",
+      "artworkUrl60": "http://is4.mzstatic.com/image/pf/us/r30/Video2/v4/b6/b1/78/b6b1783a-f2b9-27d7-1b1e-c3cffe88b759/mza_5038449943742535542.60x60-50.jpg",
+      "artworkUrl100": "http://is1.mzstatic.com/image/pf/us/r30/Video2/v4/b6/b1/78/b6b1783a-f2b9-27d7-1b1e-c3cffe88b759/mza_5038449943742535542.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "1995-05-19T07:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "discCount": 1,
+      "discNumber": 1,
+      "trackCount": 4,
+      "trackNumber": 3,
+      "trackTimeMillis": 7713726,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "R",
+      "longDescription": "On the streets of New York City, police officer John McClane (Bruce Willis) has just about seen it all. He's got a nose for danger, a penchant for being in the wrong place at the wrong time and a talent for overcoming incredible odds. But this time, danger is looking for him. Seeking a very personal and mysterious revenge against McClane, a malevolent genius named Simon (Jeremy Irons) is forcing the heroic cop to play a deadly game. The stakes: New York City itself. The game begins when a phone call from Simon sends McClane to Harlem, where he unexpectedly forms an alliance with the very unwilling Zeus Carver (Samuel L. Jackson). McClane and Zeus soon find themselves careening across the Big Apple, pursuing the deadly Simon, who's always one step ahead of them.",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.270609870"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "collectionId": 647901090,
+      "trackId": 617437503,
+      "artistName": "John Moore",
+      "collectionName": "Die Hard Ultimate Collection",
+      "trackName": "A Good Day to Die Hard",
+      "collectionCensoredName": "Die Hard Ultimate Collection",
+      "trackCensoredName": "A Good Day to Die Hard",
+      "collectionArtistId": 345346894,
+      "collectionArtistViewUrl": "https://itunes.apple.com/us/artist/20th-century-fox/id345346894?uo=4",
+      "collectionViewUrl": "https://itunes.apple.com/us/movie/a-good-day-to-die-hard/id617437503?uo=4",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/a-good-day-to-die-hard/id617437503?uo=4",
+      "previewUrl": "http://a304.v.phobos.apple.com/us/r1000/000/Video/v4/6b/e1/b2/6be1b289-142c-964f-395e-3ff1a741deaa/mzvf_3307288134761327538.640x458.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is2.mzstatic.com/image/pf/us/r30/Video/v4/54/b3/d0/54b3d09a-2f56-c00f-9da3-1b62f9095722/mza_4561641816100809010.30x30-50.jpg",
+      "artworkUrl60": "http://is4.mzstatic.com/image/pf/us/r30/Video/v4/54/b3/d0/54b3d09a-2f56-c00f-9da3-1b62f9095722/mza_4561641816100809010.60x60-50.jpg",
+      "artworkUrl100": "http://is5.mzstatic.com/image/pf/us/r30/Video/v4/54/b3/d0/54b3d09a-2f56-c00f-9da3-1b62f9095722/mza_4561641816100809010.100x100-75.jpg",
+      "collectionPrice": 39.99,
+      "trackPrice": 9.99,
+      "collectionHdPrice": 39.99000,
+      "trackHdPrice": 9.99000,
+      "releaseDate": "2013-02-14T08:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "discCount": 1,
+      "discNumber": 1,
+      "trackCount": 5,
+      "trackNumber": 5,
+      "trackTimeMillis": 5883592,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "R",
+      "shortDescription": "Bruce Willis is back in action — mind-blowing, heart-stopping, rip-roaring action — as John McClane",
+      "longDescription": "Bruce Willis is back in action — mind-blowing, heart-stopping, rip-roaring action — as John McClane, the heroic New York cop with a knack for being in the wrong place at the right time. John’s latest predicament takes him all the way to Russia to track down his estranged son, Jack (Jai Courtney), who has been imprisoned in Moscow. But the mission takes a deadly turn as father and son must join forces to thwart a nuclear weapons heist that could trigger World War III!",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.617437503"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "collectionId": 585526588,
+      "trackId": 270698542,
+      "artistName": "Len Wiseman",
+      "collectionName": "Die Hard Quadrilogy",
+      "trackName": "Live Free or Die Hard",
+      "collectionCensoredName": "Die Hard Quadrilogy",
+      "trackCensoredName": "Live Free or Die Hard",
+      "collectionArtistId": 345346894,
+      "collectionArtistViewUrl": "https://itunes.apple.com/us/artist/20th-century-fox/id345346894?uo=4",
+      "collectionViewUrl": "https://itunes.apple.com/us/movie/live-free-or-die-hard/id270698542?uo=4",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/live-free-or-die-hard/id270698542?uo=4",
+      "previewUrl": "http://a1003.v.phobos.apple.com/us/r1000/056/Video/5b/97/a4/mzm.fdoyekqo..640x389.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/68/aa/c8/68aac883-0afb-320e-41ea-f3723bfc795a/mza_8152212719144627945.30x30-50.jpg",
+      "artworkUrl60": "http://is2.mzstatic.com/image/pf/us/r30/Video/v4/68/aa/c8/68aac883-0afb-320e-41ea-f3723bfc795a/mza_8152212719144627945.60x60-50.jpg",
+      "artworkUrl100": "http://is2.mzstatic.com/image/pf/us/r30/Video/v4/68/aa/c8/68aac883-0afb-320e-41ea-f3723bfc795a/mza_8152212719144627945.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "2007-06-27T07:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "discCount": 1,
+      "discNumber": 1,
+      "trackCount": 4,
+      "trackNumber": 4,
+      "trackTimeMillis": 7720803,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "PG-13",
+      "longDescription": "Live Free or Die Hard gets real – with real action, real humor, and the reprise of a beloved and iconic character: John McClane (Bruce Willis). On the Fourth of July weekend, an attack on the vulnerable United States infrastructure begins to shut down the entire nation. The mysterious figure behind the scheme has figured out every modern angle… but he never figured on John McClane – the old-school \"analog\" fly in the \"digital\" ointment.",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.270698542"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "collectionId": 585526588,
+      "trackId": 578539479,
+      "artistName": "Renny Harlin",
+      "collectionName": "Die Hard Quadrilogy",
+      "trackName": "Die Hard 2: Die Harder",
+      "collectionCensoredName": "Die Hard Quadrilogy",
+      "trackCensoredName": "Die Hard 2: Die Harder",
+      "collectionArtistId": 345346894,
+      "collectionArtistViewUrl": "https://itunes.apple.com/us/artist/20th-century-fox/id345346894?uo=4",
+      "collectionViewUrl": "https://itunes.apple.com/us/movie/die-hard-2-die-harder/id578539479?uo=4",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/die-hard-2-die-harder/id578539479?uo=4",
+      "previewUrl": "http://a876.v.phobos.apple.com/us/r1000/110/Video/v4/33/0e/05/330e054e-8b65-4d28-0154-92d569766937/mzvf_885473030826173451.640x354.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/2a/de/eb/2adeeb6b-01d2-ab12-2c87-c5730b3ffdbf/mza_7092209350810796768.30x30-50.jpg",
+      "artworkUrl60": "http://is2.mzstatic.com/image/pf/us/r30/Video/v4/2a/de/eb/2adeeb6b-01d2-ab12-2c87-c5730b3ffdbf/mza_7092209350810796768.60x60-50.jpg",
+      "artworkUrl100": "http://is4.mzstatic.com/image/pf/us/r30/Video/v4/2a/de/eb/2adeeb6b-01d2-ab12-2c87-c5730b3ffdbf/mza_7092209350810796768.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "1990-01-01T08:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "discCount": 1,
+      "discNumber": 1,
+      "trackCount": 4,
+      "trackNumber": 2,
+      "trackTimeMillis": 7401406,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "R",
+      "shortDescription": "Bruce Willis returns as John McClane, an off-duty cop who is the wrong guy in the wrong place at the",
+      "longDescription": "Bruce Willis returns as John McClane, an off-duty cop who is the wrong guy in the wrong place at the wrong time. On a snowy Christmas Eve, as he waits for his wife’s plane to land at Washington Dulles International Airport, terrorists take over the air traffic control system. It’s now up to McClane to take on the terrorists, while coping with an inept airport police chief, an uncooperative anti-terrorist squad and the life of his wife and everyone else trapped in planes circling overhead.",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.578539479"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "trackId": 279609666,
+      "artistName": "Len Wiseman",
+      "trackName": "Live Free or Die Hard (Unrated)",
+      "trackCensoredName": "Live Free or Die Hard (Unrated)",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/live-free-or-die-hard-unrated/id279609666?uo=4",
+      "previewUrl": "http://a787.v.phobos.apple.com/us/r1000/024/Video/v4/9e/97/51/9e97519f-70aa-a7ae-934d-0e6bc9f4d1f9/mzvf_2225762998039267970.640x272.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is5.mzstatic.com/image/pf/us/r30/Video/v4/d2/7a/71/d27a713f-32db-557a-85b6-90f21c2277df/mza_2048562882721120653.30x30-50.jpg",
+      "artworkUrl60": "http://is4.mzstatic.com/image/pf/us/r30/Video/v4/d2/7a/71/d27a713f-32db-557a-85b6-90f21c2277df/mza_2048562882721120653.60x60-50.jpg",
+      "artworkUrl100": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/d2/7a/71/d27a713f-32db-557a-85b6-90f21c2277df/mza_2048562882721120653.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "2007-01-01T08:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "trackTimeMillis": 7715007,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "Unrated",
+      "longDescription": "Live Free or Die Hard gets real – with real action, real humor, and the reprise of a beloved and iconic character: John McClane (Bruce Willis). On the Fourth of July weekend, an attack on the vulnerable United States infrastructure begins to shut down the entire nation. The mysterious figure behind the scheme has figured out every modern angle… but he never figured on John McClane – the old-school \"analog\" fly in the \"digital\" ointment.",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.279609666"
+    },
+    {
+      "wrapperType": "track",
+      "kind": "feature-movie",
+      "trackId": 650191556,
+      "artistName": "John Moore",
+      "trackName": "A Good Day to Die Hard (Extended version)",
+      "trackCensoredName": "A Good Day to Die Hard (Extended version)",
+      "trackViewUrl": "https://itunes.apple.com/us/movie/good-day-to-die-hard-extended/id650191556?uo=4",
+      "previewUrl": "http://a377.v.phobos.apple.com/us/r1000/077/Video/v4/13/d7/77/13d777b2-2874-826f-3c59-0c1ad0ff1186/mzvf_6976905322941297915.640x458.h264lc.D2.p.m4v",
+      "artworkUrl30": "http://is2.mzstatic.com/image/pf/us/r30/Video/v4/e5/7f/a2/e57fa2a2-f34d-3bb0-dbe5-05ccf21d1264/031329alt.30x30-50.jpg",
+      "artworkUrl60": "http://is4.mzstatic.com/image/pf/us/r30/Video/v4/e5/7f/a2/e57fa2a2-f34d-3bb0-dbe5-05ccf21d1264/031329alt.60x60-50.jpg",
+      "artworkUrl100": "http://is3.mzstatic.com/image/pf/us/r30/Video/v4/e5/7f/a2/e57fa2a2-f34d-3bb0-dbe5-05ccf21d1264/031329alt.100x100-75.jpg",
+      "collectionPrice": 9.99,
+      "trackPrice": 9.99,
+      "trackRentalPrice": 2.99000,
+      "collectionHdPrice": 9.99000,
+      "trackHdPrice": 9.99000,
+      "trackHdRentalPrice": 3.99000,
+      "releaseDate": "2013-06-04T07:00:00Z",
+      "collectionExplicitness": "notExplicit",
+      "trackExplicitness": "notExplicit",
+      "trackTimeMillis": 6091133,
+      "country": "USA",
+      "currency": "USD",
+      "primaryGenreName": "Action & Adventure",
+      "contentAdvisoryRating": "Unrated",
+      "shortDescription": "Bruce Willis is back in action — mind-blowing, heart-stopping, rip-roaring action — as John McClane",
+      "longDescription": "Bruce Willis is back in action — mind-blowing, heart-stopping, rip-roaring action — as John McClane, the heroic New York cop with a knack for being in the wrong place at the right time. John’s latest predicament takes him all the way to Russia to track down his estranged son, Jack (Jai Courtney), who has been imprisoned in Moscow. But the mission takes a deadly turn as father and son must join forces to thwart a nuclear weapons heist that could trigger World War III!",
+      "radioStationUrl": "https://itunes.apple.com/station/idra.650191556"
+    }
+  ]
+}
+</script>
 
-    var container, renderer, effect;
+<script>
+	this.scene = new THREE.Scene();
+    var container, renderer, controls, effect;
     var anaglyphIsOn    = false;
     var animated        = false;
-
     // CAMERA
     var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR, camera;
-    SCREEN_WIDTH = 0.85 * screen.width;
-    SCREEN_HEIGHT = 0.8 * screen.height;
-    VIEW_ANGLE = 45,
-    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
-    NEAR = 0.1, 
-    FAR = 20000;
+    SCREEN_WIDTH = 0.83 * screen.width;
+    SCREEN_HEIGHT = 0.85 * screen.height;
+    VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1,FAR = 200000;
     camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     scene.add(camera);
-    camera.position.set(0,150,400);
+    camera.position.set(0,0,400);
     camera.lookAt(scene.position);
-
     // RENDERER
 	container = document.getElementById('container');
     renderer = new THREE.WebGLRenderer();
@@ -46,126 +302,53 @@
     renderer.shadowMapType = THREE.PCFSoftShadowMap;
     renderer.domElement.style.margin = '0 auto';
     document.body.appendChild( renderer.domElement );
-    
-    // For 3D
     if (anaglyphIsOn) {
         effect = new THREE.AnaglyphEffect(renderer);
         effect.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-    
-    // LIGHT
-    var light = new THREE.SpotLight( 0xffffff );
-    // light.shadowCameraVisible = true; // for debugging light
-    light.position.set( 600, 1000, 0 );
-    light.distance = 100;
-    light.castShadow = true;
-    light.shadowMapWidth = 1024;
-    light.shadowMapHeight = 1024;
-    light.shadowCameraNear = NEAR;
-    light.shadowCameraFar = FAR;
-    light.shadowCameraFov = 30;
-    light.shadowDarkness = 0.5;
-    scene.add(light);
 
+    //-------------------------------------------------------------
+    //-------------------------------------------------------------
+    
     // PLANE
-    var floorTexture, floorMaterial, floorGeometry, floor;
-    floorTexture = THREE.ImageUtils.loadTexture("textures/metal.jpg");
-    floorTexture.needsUpdate = true;
-    floorTexture.wrapS = floorTexture.wrapT = THREE.ClampToEdgeWrapping;
-    floorTexture.minFilter = THREE.NearestFilter;
-    floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-    floorGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
-    floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.position.y = -0.5;
-    floor.rotation.x = Math.PI / 2;
-    floor.receiveShadow = true;
-    scene.add(floor);
+    var bgTexture, bgMaterial, bgGeometry, bg;
+    bgTexture = THREE.ImageUtils.loadTexture("textures/sky.jpg");
+    bgTexture.wrapS = bgTexture.wrapT = THREE.RepeatWrapping; 
+    bgTexture.repeat.set(9, 9);
+    bgMaterial = new THREE.MeshBasicMaterial( { map: bgTexture, side: THREE.DoubleSide } );
+    bgGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
+    bg = new THREE.Mesh(bgGeometry, bgMaterial);
+    bg.position.z = -200;
+    scene.add(bg);
 
-    // Tweet
-    // var tweetMaterial, tweetGeometry, tweet;
-    // tweetMaterial = new THREE.MeshBasicMaterial({ color:0x55ACEE });
-    // tweetGeometry = new THREE.PlaneBufferGeometry(100, 100, 1, 1);
-    // tweet = new THREE.Mesh(tweetGeometry, tweetMaterial);
-    // tweet.position.x = -200;
-    // tweet.position.y = 1;
-    // tweet.receiveShadow = true;
-    // scene.add(tweet);
+    // POSTERS
+    for (var i = dieHard.results.length - 1; i >= 0; i--) {
+        var posterTexture, posterMaterial, posterGeometry, poster, posterImageURL;
+        posterImageURL = dieHard.results[i].artworkUrl100;
+        posterTexture = THREE.ImageUtils.loadTexture(posterImageURL);
+        posterTexture.minFilter = THREE.NearestFilter;
+        posterMaterial = new THREE.MeshBasicMaterial({map:posterTexture});
+        posterGeometry = new THREE.PlaneBufferGeometry(60, 60);
+        poster = new THREE.Mesh(posterGeometry, posterMaterial);
+        poster.position.y = 136;
+        poster.position.x = -230 + i * 60;
+        scene.add(poster);
+    }
 
-    // CSS3D
-    //-----------------------------------------------------------
+    //-------------------------------------------------------------
+    //-------------------------------------------------------------
 
-    // HTML Plane
-    var planeMaterial   = new THREE.MeshBasicMaterial({color: 0x55ACEE, opacity: 0.1, side: THREE.DoubleSide });
-    var planeWidth = 250;
-    var planeHeight = 100;
-    var planeGeometry = new THREE.PlaneBufferGeometry( planeWidth, planeHeight );
-    var planeMesh= new THREE.Mesh( planeGeometry, planeMaterial );
-    planeMesh.position.y += planeHeight/2;
-    scene.add(planeMesh);
-
-    // CSS Scene
-    var cssScene = new THREE.Scene();
-    var element = document.createElement('iframe')
-    element.src = "pages/profile.html";
-    var elementWidth = SCREEN_WIDTH;
-    var aspectRatio = planeHeight / planeWidth;
-    var elementHeight = SCREEN_HEIGHT; //elementWidth * aspectRatio;
-    element.style.width  = elementWidth + "px";
-    element.style.height = elementHeight + "px";
-    
-    // CSS Object
-    var cssObject = new THREE.CSS3DObject( element );
-    cssObject.position = planeMesh.position;
-    cssObject.rotation = planeMesh.rotation;
-    var percentBorder = 0.05;
-    cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
-    cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
-    cssScene.add(cssObject);
-    
-    // create a renderer for CSS
-    rendererCSS = new THREE.CSS3DRenderer();
-    rendererCSS.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-    // rendererCSS.domElement.style.position = 'absolute';
-    // rendererCSS.domElement.style.top      = 0;
-    // rendererCSS.domElement.style.margin   = 0;
-    // rendererCSS.domElement.style.padding  = 0;
-    document.body.appendChild( rendererCSS.domElement );
-
-    // renderer.domElement.style.position = 'absolute';
-    // renderer.domElement.style.top      = 50;
-    // renderer.domElement.style.zIndex   = 1;
-    // rendererCSS.domElement.appendChild( renderer.domElement );
-    //-----------------------------------------------------------
-
-	// CUBE
-    var cubeTexture, cubeMaterial, cubeGeometry, cube;
-	cubeTexture = THREE.ImageUtils.loadTexture("textures/funky.jpg");
-    cubeTexture.needsUpdate = true;
-    cubeTexture.wrapS = cubeTexture.wrapT = THREE.ClampToEdgeWrapping;
-    cubeTexture.minFilter = THREE.NearestFilter;
-    cubeMaterial = new THREE.MeshBasicMaterial({ map: cubeTexture, side: THREE.DoubleSide });
-    cubeGeometry = new THREE.BoxGeometry(100, 100, 100);
-	cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
-    cube.position.z = -100;
-    cube.rotation.x = 1;
-    cube.rotation.y = 1;
-    cube.castShadow = true;
-	// floor.add(cube);
-
-	// RENDER
 	var render = function () {
 		time = (new Date().getTime()) / 1000;
 	 	requestAnimationFrame( render );
 
-        // Animate stuff
         if (animated) {
-    	    cube.position.z = -100 + 20 * Math.sin(time);
+            // Animate stuff
         }
 
-        // Render scene
         if (!anaglyphIsOn) {
             renderer.render(scene, camera);
-        } else {
+        } else { // 3D
             effect.render(scene, camera);
         }
 	};
