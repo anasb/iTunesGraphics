@@ -20,6 +20,7 @@
 <script src="js/THREEx.WindowResize.js"></script>
 <script src='js/DAT.GUI.min.js'></script>
 <script src='js/tween.min.js'></script>
+<script src="js/OrbitControls.js"></script>
 
 <center>
 <div id="container" style="position: absolute; left:0px; top:0px"></div>
@@ -175,7 +176,7 @@ function updateView()
 
 function addPosterAnimated(poster, index) {
     var delay    = 40;
-    var duration = 500;
+    var duration = 800;
     var position = { z: -1000 };
     var target   = { z:0 };
     var tween    = new TWEEN.Tween(position).to(target, duration);
@@ -245,6 +246,9 @@ function setRenderer() {
         container.appendChild(renderer.domElement);
         THREEx.WindowResize(renderer, camera);
     }
+
+    // CONTROLS
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
 }
 
 function render() 
@@ -264,7 +268,8 @@ function render()
 function animate() 
 {
     requestAnimationFrame( animate );
-    render();       
+    render();
+    controls.update();
 }
 
 </script>
