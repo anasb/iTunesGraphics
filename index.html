@@ -29,6 +29,7 @@
 
 // standard global variables
 var container, scene, camera, renderer, controls, stats, effect, movies;
+var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
 var clock        = new THREE.Clock();
 var postersArray = [];
 var anaglyphIsOn = false;
@@ -41,31 +42,8 @@ animate();
 function init() 
 {
 	this.scene = new THREE.Scene();
-
-    // CAMERA
-    var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
-    SCREEN_WIDTH = window.innerWidth;
-    SCREEN_HEIGHT = window.innerHeight;
-    VIEW_ANGLE    = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1,FAR = 200000;
-    camera        = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-    scene.add(camera);
-    camera.position.set(0,0,400);
-    camera.lookAt(scene.position);
-
-    // RENDERER
     renderer = new THREE.WebGLRenderer( {antialias:true} );
-    if (anaglyphIsOn) {
-        effect = new THREE.AnaglyphEffect(renderer);
-        effect.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        container = document.getElementById('container');
-        container.appendChild(renderer.domElement);
-        THREEx.WindowResize(effect, camera);
-    } else {
-        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        container = document.getElementById('container');
-        container.appendChild(renderer.domElement);
-        THREEx.WindowResize(renderer, camera);
-    }
+    setRenderer();
     
     // BACKGROUND
     var bgTexture, bgMaterial, bgGeometry, bg;
@@ -90,18 +68,31 @@ function init()
         update: function() { updateView() }
     };
 
-    // Search Options
-    gui.add( parameters, 'searchTerm' ).name("Search");
+    // Keyword
+    gui.add( parameters, 'searchTerm' ).name("Keyword");
+    
+    // Search button
+    gui.add(parameters, 'update').name("Search iTunes");
+    
+    // Limit
     gui.add( parameters, 'limit' ).min(1).max(150).step(1).listen().name("Limit").onChange(function(value) {
         parameters.limit = value;        
     });
+
+    // Media Type
     var media = gui.add(parameters, 'media', ["All", "Movies", "TV Shows", "Music", "Apps", "Podcasts", "Audiobooks", "Ebooks", "Short Films"]).name('Media Type').listen();
     media.onChange(function(value) {
         updateView();
     });
-    
-    // Buttons
-    gui.add(parameters, 'update').name("Query iTunes");
+
+    // 3D option
+    var anaglyphParam = gui.add( parameters, 'anaglyph' ).name('3D').listen();
+    anaglyphParam.onChange(function(value) {
+        anaglyphIsOn = value;
+        setRenderer();
+    });
+
+    // Reset to default
     gui.add( parameters, 'reset' ).name("Reset to Default");
     
     gui.open();
@@ -213,6 +204,31 @@ function convertMediaType(type) {
     }
 }
 
+function setRenderer() {
+    // CAMERA
+    SCREEN_WIDTH = window.innerWidth;
+    SCREEN_HEIGHT = window.innerHeight;
+    VIEW_ANGLE    = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1,FAR = 200000;
+    camera        = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+    scene.add(camera);
+    camera.position.set(0,0,400);
+    camera.lookAt(scene.position);
+
+    // RENDERER
+    if (anaglyphIsOn) {
+        effect = new THREE.AnaglyphEffect(renderer);
+        effect.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        container = document.getElementById('container');
+        container.appendChild(renderer.domElement);
+        THREEx.WindowResize(effect, camera);
+    } else {
+        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        container = document.getElementById('container');
+        container.appendChild(renderer.domElement);
+        THREEx.WindowResize(renderer, camera);
+    }
+}
+
 function render() 
 {
     if (animated) {
@@ -231,13 +247,6 @@ function animate()
 {
     requestAnimationFrame( animate );
     render();       
-    update();
-}
-
-function update()
-{
-    // controls.update();
-    // stats.update();
 }
 
 </script>
