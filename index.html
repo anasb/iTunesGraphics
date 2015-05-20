@@ -18,6 +18,7 @@
 <script src="js/Projector.js"></script>
 <script src="js/TrackballControls.js"></script>
 <script src="js/THREEx.WindowResize.js"></script>
+<script type='text/javascript' src='js/DAT.GUI.min.js'></script>
 
 <center>
 <div id="container" style="position: absolute; left:0px; top:0px"></div>
@@ -69,23 +70,21 @@ function init()
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theURL, false);
         xmlHttp.send(null);
-        // console.log('getting movies on URL: '+theURL);
         return xmlHttp.responseText;
     }
     var searchTerm = 'doctor who';
-    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit=80"));
+    var limit = 60;
+    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit="+limit));
     
     function search() {
         clearPosters();
         var searchTerm = document.getElementById('searchField').value;
-        // console.log('Searching for '+searchTerm);
-        movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit=80"));
+        movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit="+limit));
         draw();
     }
 
     // Clearing posters
     function clearPosters() {
-        // console.log('Gonna clear all posters')
         for (poster in postersArray) {
             scene.remove(poster);
         }
