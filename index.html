@@ -30,8 +30,10 @@
 // standard global variables
 var container, scene, camera, renderer, controls, stats, effect, movies;
 var clock        = new THREE.Clock();
+var postersArray = [];
 var anaglyphIsOn = false;
 var animated     = false;
+var defaultLimit = 50;
 
 init();
 animate();
@@ -64,37 +66,8 @@ function init()
         container.appendChild(renderer.domElement);
         THREEx.WindowResize(renderer, camera);
     }
-
-    // API function
-    var getMovie = function httpGet(theURL) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theURL, false);
-        xmlHttp.send(null);
-        return xmlHttp.responseText;
-    }
-    var searchTerm = 'doctor who';
-    var limit = 60;
-    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit="+limit));
     
-    function search() {
-        clearPosters();
-        var searchTerm = document.getElementById('searchField').value;
-        movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit="+limit));
-        draw();
-    }
-
-    // Clearing posters
-    function clearPosters() {
-        for (poster in postersArray) {
-            scene.remove(poster);
-        }
-        postersArray = [];
-    }
-
-    //-------------------------------------------------------------
-    //-------------------------------------------------------------
-    
-    // PLANE
+    // BACKGROUND
     var bgTexture, bgMaterial, bgGeometry, bg;
     bgTexture       = THREE.ImageUtils.loadTexture("textures/sky.jpg");
     bgTexture.wrapS = bgTexture.wrapT = THREE.RepeatWrapping; 
@@ -105,9 +78,61 @@ function init()
     bg.position.z   = -200;
     scene.add(bg);
 
+    // GUI Parameters Box
+    gui = new dat.GUI();
+    parameters = 
+    {
+        searchTerm: "Doctor Who",
+        limit: defaultLimit,
+        reset: function() { resetView() },
+        update: function() { updateView() }
+    };
+
+    // Search Options
+    gui.add( parameters, 'searchTerm' ).name("Search");
+    gui.add( parameters, 'limit' ).min(1).max(150).step(1).listen().name("Limit").onChange(function(value) {
+        parameters.limit = value;        
+    });
+    
+    // Buttons
+    gui.add(parameters, 'update').name("Query iTunes");
+    gui.add( parameters, 'reset' ).name("Reset to Default");
+    
+    gui.open();
+    resetView();
+}
+
+// Reset view to default
+function resetView()
+{
+    clearPosters();
+    parameters.searchTerm = "Doctor Who";
+    parameters.limit = defaultLimit;
+    updateView();
+}
+
+// Clearing posters
+function clearPosters() {
+    for (i = 0; i < postersArray.length; i++) {
+        scene.remove(postersArray[i]);
+    }
+    postersArray = [];
+}
+
+// Query iTunes + generate posters
+function updateView()
+{
+    // API function
+    var getMovie = function httpGet(theURL) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theURL, false);
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
+    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+parameters.searchTerm+"&limit="+parameters.limit));
+
     // POSTERS
     var posterTexture, posterMaterial, posterGeometry, poster, posterImageURL;
-    var postersArray = [];
     var MAX_PER_LINE = 10;
     var size         = 50;
     var lineNumber   = 0;
@@ -165,12 +190,6 @@ function update()
     // controls.update();
     // stats.update();
 }
-	// var render = function () {
-	// 	time = (new Date().getTime()) / 1000;
-	//  	requestAnimationFrame( render );
-
-	// };
-	// render();
 
 </script>
 </body>
