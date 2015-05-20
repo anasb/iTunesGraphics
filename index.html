@@ -84,6 +84,8 @@ function init()
     {
         searchTerm: "Doctor Who",
         limit: defaultLimit,
+        media: 'All',
+        anaglyph: false,
         reset: function() { resetView() },
         update: function() { updateView() }
     };
@@ -92,6 +94,10 @@ function init()
     gui.add( parameters, 'searchTerm' ).name("Search");
     gui.add( parameters, 'limit' ).min(1).max(150).step(1).listen().name("Limit").onChange(function(value) {
         parameters.limit = value;        
+    });
+    var media = gui.add(parameters, 'media', ["All", "Movies", "TV Shows", "Music", "Apps", "Podcasts", "Audiobooks", "Ebooks", "Short Films"]).name('Media Type').listen();
+    media.onChange(function(value) {
+        updateView();
     });
     
     // Buttons
@@ -108,6 +114,8 @@ function resetView()
     clearPosters();
     parameters.searchTerm = "Doctor Who";
     parameters.limit = defaultLimit;
+    parameters.media = 'All';
+    parameters.anaglyph = false;
     updateView();
 }
 
@@ -122,6 +130,9 @@ function clearPosters() {
 // Query iTunes + generate posters
 function updateView()
 {
+    // Cleanup first
+    clearPosters();
+
     // API function
     var getMovie = function httpGet(theURL) {
         var xmlHttp = new XMLHttpRequest();
@@ -129,7 +140,11 @@ function updateView()
         xmlHttp.send(null);
         return xmlHttp.responseText;
     }
-    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+parameters.searchTerm+"&limit="+parameters.limit));
+
+    movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+parameters.searchTerm
+                                                                +"&limit="+parameters.limit
+                                                                +"&media="+convertMediaType(parameters.media)
+                                                                ));
 
     // POSTERS
     var posterTexture, posterMaterial, posterGeometry, poster, posterImageURL;
@@ -161,6 +176,40 @@ function updateView()
         
         postersArray.push(poster);
         scene.add(poster);
+    }
+}
+
+function convertMediaType(type) {
+    switch (type) {
+        case 'Movies':
+        return 'movie';
+
+        case "TV Shows":
+        return 'tvShow';
+
+        case "Music":
+        return 'music';
+
+        case "Music Videos":
+        return 'musicVideo';
+
+        case "Audiobooks":
+        return 'audiobook';
+
+        case "Short Films":
+        return 'shortFilm';
+
+        case "Apps":
+        return 'software';
+
+        case "Ebooks":
+        return 'ebook';
+
+        case "Podcasts":
+        return 'podcast'
+
+        default:
+        return 'all';
     }
 }
 
