@@ -28,9 +28,9 @@
 
 // standard global variables
 var container, scene, camera, renderer, controls, stats, effect, movies;
-var clock = new THREE.Clock();
-var anaglyphIsOn    = false;
-var animated        = true;
+var clock        = new THREE.Clock();
+var anaglyphIsOn = false;
+var animated     = false;
 
 init();
 animate();
@@ -51,11 +51,18 @@ function init()
 
     // RENDERER
     renderer = new THREE.WebGLRenderer( {antialias:true} );
-    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    container = document.getElementById( 'container' );
-    container.appendChild( renderer.domElement );
-    // EVENTS
-    THREEx.WindowResize(renderer, camera);
+    if (anaglyphIsOn) {
+        effect = new THREE.AnaglyphEffect(renderer);
+        effect.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        container = document.getElementById('container');
+        container.appendChild(renderer.domElement);
+        THREEx.WindowResize(effect, camera);
+    } else {
+        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        container = document.getElementById('container');
+        container.appendChild(renderer.domElement);
+        THREEx.WindowResize(renderer, camera);
+    }
 
     // API function
     var getMovie = function httpGet(theURL) {
@@ -65,7 +72,7 @@ function init()
         // console.log('getting movies on URL: '+theURL);
         return xmlHttp.responseText;
     }
-    var searchTerm = 'friends';
+    var searchTerm = 'doctor who';
     movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+searchTerm+"&limit=80"));
     
     function search() {
@@ -137,15 +144,14 @@ function render()
 {
     if (animated) {
         // Animate stuff
-
     }
 
+    // Render (anagplyh / webgl)
     if (!anaglyphIsOn) {
         renderer.render(scene, camera);
-    } else { // 3D
+    } else {
         effect.render(scene, camera);
     }
-    // renderer.render( scene, camera );
 }
 
 function animate() 
