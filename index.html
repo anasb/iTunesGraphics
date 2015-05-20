@@ -71,7 +71,9 @@ function init()
     };
 
     // Keyword
-    gui.add( parameters, 'searchTerm' ).name("Keyword");
+    gui.add( parameters, 'searchTerm' ).name("Keyword").onFinishChange(function(){
+        updateView();
+    });
     
     // Limit
     gui.add( parameters, 'limit' ).min(1).max(150).step(1).listen().name("Limit").onChange(function(value) {
@@ -216,7 +218,10 @@ function convertMediaType(type) {
         return 'ebook';
 
         case "Podcasts":
-        return 'podcast'
+        return 'podcast';
+
+        case "All":
+        return 'all';
 
         default:
         return 'all';
