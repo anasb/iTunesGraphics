@@ -18,7 +18,8 @@
 <script src="js/Projector.js"></script>
 <script src="js/TrackballControls.js"></script>
 <script src="js/THREEx.WindowResize.js"></script>
-<script type='text/javascript' src='js/DAT.GUI.min.js'></script>
+<script src='js/DAT.GUI.min.js'></script>
+<script src='js/tween.min.js'></script>
 
 <center>
 <div id="container" style="position: absolute; left:0px; top:0px"></div>
@@ -33,7 +34,7 @@ var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
 var clock        = new THREE.Clock();
 var postersArray = [];
 var anaglyphIsOn = false;
-var animated     = false;
+var animated     = true;
 var defaultLimit = 50;
 
 init();
@@ -71,14 +72,14 @@ function init()
     // Keyword
     gui.add( parameters, 'searchTerm' ).name("Keyword");
     
-    // Search button
-    gui.add(parameters, 'update').name("Search iTunes");
-    
     // Limit
     gui.add( parameters, 'limit' ).min(1).max(150).step(1).listen().name("Limit").onChange(function(value) {
         parameters.limit = value;        
     });
 
+    // Search button
+    gui.add(parameters, 'update').name("Search iTunes");
+    
     // Media Type
     var media = gui.add(parameters, 'media', ["All", "Movies", "TV Shows", "Music", "Apps", "Podcasts", "Audiobooks", "Ebooks", "Short Films"]).name('Media Type').listen();
     media.onChange(function(value) {
@@ -142,7 +143,7 @@ function updateView()
     var MAX_PER_LINE = 10;
     var size         = 50;
     var lineNumber   = 0;
-    var y            = 136;
+    var y            = 120;
 
     // Drawing posters
     for (var i = 0; i < movies.results.length; i++) {
@@ -163,11 +164,27 @@ function updateView()
         var x = -230 + lineNumber * size;
         poster.position.x = x;
         poster.position.y = y;
+        poster.position.z = -1000;
         lineNumber++;
         
         postersArray.push(poster);
-        scene.add(poster);
+        addPosterAnimated(poster, i);
     }
+}
+
+function addPosterAnimated(poster, index) {
+    var delay    = 50;
+    var duration = 500;
+    var position = { z: -1000 };
+    var target   = { z:0 };
+    var tween    = new TWEEN.Tween(position).to(target, duration);
+    tween.onUpdate(function(){
+        poster.position.z = position.z;
+    });
+    tween.easing(TWEEN.Easing.Back.Out);
+    tween.delay(index * delay + 200);
+    tween.start();
+    scene.add(poster);
 }
 
 function convertMediaType(type) {
@@ -232,7 +249,7 @@ function setRenderer() {
 function render() 
 {
     if (animated) {
-        // Animate stuff
+        TWEEN.update();
     }
 
     // Render (anagplyh / webgl)
