@@ -2,14 +2,6 @@
 <title>Final Project - Computer Graphics ANAS BOUZOUBAA</title>
 <body>
 
-<!-- <center>
-    <h2>Anas Bouzoubaa Final Project</h2>
-    <input type="text" id="searchField" onkeydown="if (event.keyCode == 13) document.getElementById('btnSearch').click()"/>
-    <button id="btnSearch" onclick="search();" href="javascript:;">Movie Search</button>
-    <br />
-    <br />
-</center> -->
-
 <link href="style/style.css" rel="stylesheet" type="text/css">
 <script src="js/script.js"></script>
 <script src="js/three.min.js"></script>
@@ -144,17 +136,17 @@ function updateView()
 
     // NO RESULTS
     if (movies.resultCount == 0) {
-        var canvas1 = document.createElement('canvas');
-        var context1 = canvas1.getContext('2d');
-        context1.font = "Bold 40px Helvetica";
-        context1.fillStyle = "rgba(255,255,255,1)";
+        var canvas1           = document.createElement('canvas');
+        var context1          = canvas1.getContext('2d');
+        context1.font         = "Bold 40px Helvetica";
+        context1.fillStyle    = "rgba(255,255,255,1)";
         context1.fillText('No results...', 0, 50);
-        var texture1 = new THREE.Texture(canvas1) 
-        texture1.needsUpdate = true;
-        texture1.minFilter = THREE.LinearFilter;
-        var material1 = new THREE.MeshBasicMaterial( {map: texture1 } );
+        var texture1          = new THREE.Texture(canvas1) 
+        texture1.needsUpdate  = true;
+        texture1.minFilter    = THREE.LinearFilter;
+        var material1         = new THREE.MeshBasicMaterial( {map: texture1 } );
         material1.transparent = true;
-        noResultsLabel = new THREE.Mesh(
+        noResultsLabel        = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(canvas1.width, canvas1.height),
             material1
         );
@@ -170,7 +162,7 @@ function updateView()
     var size         = 50;
     var lineNumber   = 0;
     var y            = 130;
-    var x = -230;
+    var x = -275;
 
     // Drawing posters
     for (var i = 0; i < movies.results.length; i++) {
@@ -188,7 +180,7 @@ function updateView()
             lineNumber = 0;
             y -= size + 2;
         }
-        var x = -230 + lineNumber * (size + 2);
+        var x = -275 + lineNumber * (size + 4);
         poster.position.x = x;
         poster.position.y = y;
         poster.position.z = -1000;
@@ -253,7 +245,7 @@ function convertMediaType(type) {
 
 function setRenderer() {
     // CAMERA
-    SCREEN_WIDTH = window.innerWidth;
+    SCREEN_WIDTH  = window.innerWidth;
     SCREEN_HEIGHT = window.innerHeight;
     VIEW_ANGLE    = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1,FAR = 200000;
     camera        = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
