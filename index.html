@@ -30,7 +30,7 @@
 <script>
 
 // standard global variables
-var container, scene, camera, renderer, controls, stats, effect, movies;
+var container, scene, camera, renderer, controls, stats, effect, movies, noResultsLabel;
 var SCREEN_WIDTH, SCREEN_HEIGHT, VIEW_ANGLE, ASPECT, NEAR, FAR;
 var clock        = new THREE.Clock();
 var postersArray = [];
@@ -116,6 +116,7 @@ function resetView()
 
 // Clearing posters
 function clearPosters() {
+    scene.remove(noResultsLabel);
     for (i = 0; i < postersArray.length; i++) {
         scene.remove(postersArray[i]);
     }
@@ -140,6 +141,28 @@ function updateView()
                                                                 +"&limit="+parameters.limit
                                                                 +"&media="+convertMediaType(parameters.media)
                                                                 ));
+
+    // NO RESULTS
+    if (movies.resultCount == 0) {
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Helvetica";
+        context1.fillStyle = "rgba(255,255,255,1)";
+        context1.fillText('No results...', 0, 50);
+        var texture1 = new THREE.Texture(canvas1) 
+        texture1.needsUpdate = true;
+        texture1.minFilter = THREE.LinearFilter;
+        var material1 = new THREE.MeshBasicMaterial( {map: texture1 } );
+        material1.transparent = true;
+        noResultsLabel = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(canvas1.width, canvas1.height),
+            material1
+        );
+        noResultsLabel.position.set(0,50,0);
+        scene.add(noResultsLabel);  
+    } else {
+        scene.remove(noResultsLabel);
+    }
 
     // POSTERS
     var posterTexture, posterMaterial, posterGeometry, poster, posterImageURL;
