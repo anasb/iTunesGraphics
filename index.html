@@ -29,6 +29,10 @@ var postersArray = [];
 var anaglyphIsOn = false;
 var animated     = true;
 var defaultLimit = 60;
+var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
+var sprite1;
+var canvas1, context1, texture1;
+var raycaster;
 
 init();
 animate();
@@ -132,9 +136,10 @@ function updateView()
     movies = JSON.parse(getMovie("https://itunes.apple.com/search?term="+parameters.searchTerm
                                                                 +"&limit="+parameters.limit
                                                                 +"&media="+convertMediaType(parameters.media)
+                                                                +"&country=us"
                                                                 ));
 
-    // NO RESULTS
+    // NO RESULTS LABEL
     if (movies.resultCount == 0) {
         var canvas1           = document.createElement('canvas');
         var context1          = canvas1.getContext('2d');
@@ -184,14 +189,54 @@ function updateView()
         poster.position.x = x;
         poster.position.y = y;
         poster.position.z = -1000;
+        poster.name = movies.results[i].trackViewUrl;
         lineNumber++;
         
         postersArray.push(poster);
         addPosterAnimated(poster, i);
     }
+
+    // Listen to mouse moves and clicks
+    var mouse = new THREE.Vector2();
+    raycaster = new THREE.Raycaster();
+    document.addEventListener( 'click', onDocumentMouseMove, false );
+    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+}
+
+function onDocumentMouseMove( event ) {
+
+    event.preventDefault();
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children );
+    
+    if (intersects.length > 0){
+
+            // Reset object color
+            if (INTERSECTED) {
+                INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+            }
+
+            // Color object & open link
+            if (intersects[0].object.name) {
+                window.open(intersects[0].object.name);
+                INTERSECTED = intersects[ 0 ].object;
+                INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+                INTERSECTED.material.color.setHex(0x666666);
+            }
+
+    } else {
+        // Reset object color
+        if (INTERSECTED) 
+            INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+        INTERSECTED = null;
+    }
 }
 
 function addPosterAnimated(poster, index) {
+    // Cool tween animation
     var delay    = 40;
     var duration = 800;
     var position = { z: -1000 };
@@ -206,42 +251,6 @@ function addPosterAnimated(poster, index) {
     scene.add(poster);
 }
 
-function convertMediaType(type) {
-    switch (type) {
-        case 'Movies':
-        return 'movie';
-
-        case "TV Shows":
-        return 'tvShow';
-
-        case "Music":
-        return 'music';
-
-        case "Music Videos":
-        return 'musicVideo';
-
-        case "Audiobooks":
-        return 'audiobook';
-
-        case "Short Films":
-        return 'shortFilm';
-
-        case "Apps":
-        return 'software';
-
-        case "Ebooks":
-        return 'ebook';
-
-        case "Podcasts":
-        return 'podcast';
-
-        case "All":
-        return 'all';
-
-        default:
-        return 'all';
-    }
-}
 
 function setRenderer() {
     // CAMERA
@@ -290,6 +299,44 @@ function animate()
     requestAnimationFrame( animate );
     render();
     controls.update();
+}
+
+
+function convertMediaType(type) {
+    switch (type) {
+        case 'Movies':
+        return 'movie';
+
+        case "TV Shows":
+        return 'tvShow';
+
+        case "Music":
+        return 'music';
+
+        case "Music Videos":
+        return 'musicVideo';
+
+        case "Audiobooks":
+        return 'audiobook';
+
+        case "Short Films":
+        return 'shortFilm';
+
+        case "Apps":
+        return 'software';
+
+        case "Ebooks":
+        return 'ebook';
+
+        case "Podcasts":
+        return 'podcast';
+
+        case "All":
+        return 'all';
+
+        default:
+        return 'all';
+    }
 }
 
 </script>
