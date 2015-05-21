@@ -28,6 +28,7 @@ var clock        = new THREE.Clock();
 var postersArray = [];
 var anaglyphIsOn = false;
 var animated     = true;
+var showTooltip  = false;
 var defaultLimit = 60;
 var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
 var myCanvas, myContext, myTexture, mySprite;
@@ -315,11 +316,11 @@ function animate()
                 var message = intersects[ 0 ].object.title;
                 var metrics = myContext.measureText(message);
                 var width = metrics.width;
-                myContext.fillStyle = "rgba(0,0,0,0.95)"; // black border
+                myContext.fillStyle = "rgba(0,0,0,0.95)";
                 myContext.fillRect( 0,0, width+8,20+8);
-                myContext.fillStyle = "rgba(255,255,255,0.95)"; // white filler
+                myContext.fillStyle = "rgba(255,255,255,0.95)";
                 myContext.fillRect( 2,2, width+4,20+4 );
-                myContext.fillStyle = "rgba(0,0,0,1)"; // text color
+                myContext.fillStyle = "rgba(0,0,0,1)";
                 myContext.fillText( message, 4,20 );
                 myTexture.needsUpdate = true;
 
@@ -337,6 +338,7 @@ function animate()
         myTexture.needsUpdate = true;
     }
 
+    mySprite.visible = showTooltip;
 }
 
 function convertMediaType(type) {
