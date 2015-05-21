@@ -30,8 +30,7 @@ var anaglyphIsOn = false;
 var animated     = true;
 var defaultLimit = 60;
 var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
-var sprite1;
-var canvas1, context1, texture1;
+var myCanvas, myContext, myTexture, mySprite;
 var raycaster;
 
 init();
@@ -190,6 +189,7 @@ function updateView()
         poster.position.y = y;
         poster.position.z = -1000;
         poster.name = movies.results[i].trackViewUrl;
+        poster.title = movies.results[i].trackName;
         lineNumber++;
         
         postersArray.push(poster);
@@ -201,38 +201,31 @@ function updateView()
     raycaster = new THREE.Raycaster();
     document.addEventListener( 'click', onDocumentMouseMove, false );
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+    // Draw tooltip
+    myCanvas = document.createElement('canvas');
+    myContext = myCanvas.getContext('2d');
+    myContext.font = "Bold 20px Helvetica";
+    myContext.fillStyle = "rgba(255,255,255,0.95)";
+    myContext.fillText('', 100, 200);
+    myTexture = new THREE.Texture(myCanvas) 
+    myTexture.needsUpdate = true;
+    myTexture.minFilter = THREE.NearestFilter;
+    var spriteMaterial = new THREE.SpriteMaterial( { map: myTexture, useScreenCoordinates: true } );
+    mySprite = new THREE.Sprite( spriteMaterial );
+    mySprite.scale.set(200,100,1);
+    mySprite.position.set( 50, 50, 0 );
+    scene.add(mySprite);
 }
 
 function onDocumentMouseMove( event ) {
 
     event.preventDefault();
+
+    mySprite.position.set( event.clientX - window.innerWidth / 2, -event.clientY + 50, 0);
+
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    raycaster.setFromCamera( mouse, camera );
-    var intersects = raycaster.intersectObjects( scene.children );
-    
-    if (intersects.length > 0){
-
-            // Reset object color
-            if (INTERSECTED) {
-                INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
-            }
-
-            // Color object & open link
-            if (intersects[0].object.name) {
-                window.open(intersects[0].object.name);
-                INTERSECTED = intersects[ 0 ].object;
-                INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
-                INTERSECTED.material.color.setHex(0x666666);
-            }
-
-    } else {
-        // Reset object color
-        if (INTERSECTED) 
-            INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
-        INTERSECTED = null;
-    }
 }
 
 function addPosterAnimated(poster, index) {
@@ -299,8 +292,52 @@ function animate()
     requestAnimationFrame( animate );
     render();
     controls.update();
-}
 
+
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children );
+    
+    if (intersects.length > 0){
+
+            // Reset object color
+            if (INTERSECTED) {
+                INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+            }
+
+            // Color object & open link
+            if (intersects[0].object.name) {
+                window.open(intersects[0].object.name);
+                INTERSECTED = intersects[ 0 ].object;
+                INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+                INTERSECTED.material.color.setHex(0x666666);
+
+                myContext.clearRect(0,0,640,480);
+                var message = intersects[ 0 ].object.title;
+                var metrics = myContext.measureText(message);
+                var width = metrics.width;
+                myContext.fillStyle = "rgba(0,0,0,0.95)"; // black border
+                myContext.fillRect( 0,0, width+8,20+8);
+                myContext.fillStyle = "rgba(255,255,255,0.95)"; // white filler
+                myContext.fillRect( 2,2, width+4,20+4 );
+                myContext.fillStyle = "rgba(0,0,0,1)"; // text color
+                myContext.fillText( message, 4,20 );
+                myTexture.needsUpdate = true;
+
+            } else {
+                myContext.clearRect(0,0,640,480);
+                myTexture.needsUpdate = true;
+            }
+
+    } else {
+        // Reset object color
+        if (INTERSECTED) 
+            INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+        INTERSECTED = null;
+        myContext.clearRect(0,0,640,480);
+        myTexture.needsUpdate = true;
+    }
+
+}
 
 function convertMediaType(type) {
     switch (type) {
